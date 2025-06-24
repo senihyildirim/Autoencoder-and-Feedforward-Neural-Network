@@ -10,7 +10,7 @@ import seaborn as sns
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Using device: {device}")
-# 1. Dataset Preparation
+
 transform = transforms.ToTensor()
 train_dataset = datasets.FashionMNIST(root="./data", train=True, download=True, transform=transform)
 test_dataset  = datasets.FashionMNIST(root="./data", train=False, download=True, transform=transform)
@@ -18,7 +18,6 @@ test_dataset  = datasets.FashionMNIST(root="./data", train=False, download=True,
 train_loader = DataLoader(train_dataset, batch_size=128, shuffle=True)
 test_loader  = DataLoader(test_dataset, batch_size=128, shuffle=False)
 
-# 2. Feedforward Neural Network
 class FeedforwardNN(nn.Module):
     def __init__(self):
         super().__init__()
@@ -45,7 +44,6 @@ model = FeedforwardNN().to(device)
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 
-# 3. Training
 train_losses = []
 train_accuracies = []
 
@@ -72,7 +70,6 @@ for epoch in range(50):
     train_accuracies.append(acc)
     print(f"Epoch {epoch+1}/50 - Loss: {train_losses[-1]:.4f} - Accuracy: {acc:.4f}")
 
-# 4. Evaluation
 model.eval()
 all_preds, all_labels = [], []
 misclassified = []
@@ -93,7 +90,6 @@ with torch.no_grad():
 accuracy = np.mean(np.array(all_preds) == np.array(all_labels))
 print(f"\nTest Accuracy: {accuracy:.4f}")
 
-# 5. Confusion Matrix
 conf_matrix = confusion_matrix(all_labels, all_preds)
 plt.figure(figsize=(10, 8))
 sns.heatmap(conf_matrix, annot=True, fmt="d", cmap="Blues", xticklabels=train_dataset.classes, yticklabels=train_dataset.classes)
@@ -103,7 +99,6 @@ plt.title("Confusion Matrix")
 plt.tight_layout()
 plt.show()
 
-# 6. Optional: Misclassified Samples
 def show_misclassified(misclassified, num=10):
     class_names = [
         "T-shirt/top", "Trouser", "Pullover", "Dress", "Coat",

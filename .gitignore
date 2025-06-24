@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+fashion-mnist
+*.png
+*.jpg
+*.pdf
